@@ -6,9 +6,11 @@ from roscopter.srv import APMCommand
 import time
 
 def conv(joystick_value):
+	#Linear control
 	return (((joystick_value + 1)/2)*1000)+1000
 
 def callback(data):
+	#Be sure physical safety switch is engaged.  If no RC commands are sent after arming within 5-10 seconds, the copter will automatically disarm
 	copter = rospy.ServiceProxy('command', APMCommand)
 	if data.buttons[2] == 1:
 		copter(3)
