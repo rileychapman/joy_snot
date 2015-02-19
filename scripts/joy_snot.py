@@ -45,13 +45,13 @@ class MCN():
 
         if self.buttons:
             if self.buttons[2]:
-                self.command(3)
+                self.command_serv(3)
                 print 'Arm Quad'
             if self.buttons[3]:
-                self.command(4)
+                self.command_serv(4)
                 print 'Disarm Quad'
 
-        self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), int(self.z), int(self.yaw)
+        (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), int(self.z), int(self.yaw))
         self.pub_rc.publish(self.twist)
 
 if __name__ == '__main__':
