@@ -20,10 +20,10 @@ class MCN():
         self.axes = []
         self.buttons = []
         self.twist = [0, 0, 0, 0, 1500, 1500, 1500, 1500]
-        self.x = 1500.0
-        self.y = 1500.0
-        self.z = 1000.0
-        self.yaw = 1500
+        self.x = 1500.0 #Side Tilt
+        self.y = 1500.0 #Front Tilt
+        self.z = 1000.0 #Throttle
+        self.yaw = 1500 #Spin
         self.pub_rc = rospy.Publisher('/send_rc', roscopter.msg.RC)
         self.sub_joy = rospy.Subscriber("/joy", Joy, self.joy_callback)
         self.command_serv = rospy.ServiceProxy('command', APMCommand)
@@ -36,10 +36,10 @@ class MCN():
     def joy_callback(self, data):
         self.axes = data.axes
         self.buttons = data.buttons
-        self.x = 1500-self.axes[0]*300
-        self.y = 1500-self.axes[1]*300
-        self.z = 1500+(self.axes[3])*500
-	self.yaw = 1500-self.axes[2]*300
+        self.x = 1500-self.axes[0]*300 #Scales 1200-1800
+        self.y = 1500-self.axes[1]*300 #Scales 1200-1800
+        self.z = 2000+(self.axes[3])*1000 #Scales 1000-3000
+        self.yaw = 1500-self.axes[2]*300 #Scales 1200-1800
 
     def fly(self):
 
@@ -60,3 +60,4 @@ if __name__ == '__main__':
         var = MCN()
         rospy.spin()
     except rospy.ROSInterruptException: pass
+    #TODO When killing from command line, have the copter disarm
