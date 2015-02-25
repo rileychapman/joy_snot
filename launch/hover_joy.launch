@@ -7,7 +7,7 @@
     <param name="autorepeat_rate" value="5" /> 
   </node>
 
-  <node pkg="joy_snot" type="hover_joy.py" name="hover_joy" output="screen">
+  <node pkg="joy_snot" type="hover_joy.py" name="joy_snot" output="screen">
   </node>
 
 </launch>
