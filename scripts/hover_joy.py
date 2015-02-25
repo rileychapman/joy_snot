@@ -77,6 +77,8 @@ class MCN():
                 self.pub_rc.publish(self.twist)
             elif self.alt > 1.0: 
                 self.risen = True
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1400, int(self.yaw))
+                self.pub_rc.publish(self.twist)
             elif self.alt > 0.2 and self.risen:
                 print 'Lower'
                 #Lower it
@@ -90,6 +92,7 @@ class MCN():
 
                 print 'Test Complete, Copter Disarming'
                 self.command_serv(4)
+                self.risen = False
 
 
 if __name__ == '__main__':
