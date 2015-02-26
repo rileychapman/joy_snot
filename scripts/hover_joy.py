@@ -73,16 +73,16 @@ class MCN():
             if self.alt < 1.0 and not self.risen:
                 print 'Rise'
                 #Make it rise
-                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1600, int(self.yaw))
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1300, int(self.yaw))
                 self.pub_rc.publish(self.twist)
             elif self.alt > 1.0: 
                 self.risen = True
-                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1350, int(self.yaw))
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1250, int(self.yaw))
                 self.pub_rc.publish(self.twist)
             elif self.alt > 0.2 and self.risen:
                 print 'Lower'
                 #Lower it
-                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1300, int(self.yaw))
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1250, int(self.yaw))
                 self.pub_rc.publish(self.twist)
             elif self.alt <= 0.2 and self.risen:
                 print 'Land'
