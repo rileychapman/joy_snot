@@ -20,7 +20,7 @@ class MCN():
         rospy.init_node('main_control_node')
         self.axes = []
         self.buttons = []
-        self.twist = [0, 0, 0, 0, 2000, 1500, 1500, 1500] #Setting to stabilized mode
+        self.twist = [0, 0, 0, 0, 1500, 1500, 1500, 1500] #Setting to stabilized mode
         self.x = 1500.0 #Side Tilt
         self.y = 1500.0 #Front Tilt
         self.z = 1000.0 #Throttle
@@ -71,12 +71,12 @@ class MCN():
                 print 'Arm Quad'
 
         if self.armed:
-            if self.alt < 1.0 and not self.risen:
+            if self.alt < 2.0 and not self.risen:
                 print 'Rise'
                 #Make it rise
                 (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1550, int(self.yaw))
                 self.pub_rc.publish(self.twist)
-            elif self.alt > 1.0: 
+            elif self.alt > 2.0: 
                 self.risen = True
                 (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1450, int(self.yaw))
                 self.pub_rc.publish(self.twist)
