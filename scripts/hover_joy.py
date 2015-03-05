@@ -28,6 +28,7 @@ class MCN():
         self.alt = 0.0
         self.armed = False
         self.risen = False
+        self.failsafe = False
         self.pub_rc = rospy.Publisher('/send_rc', roscopter.msg.RC)
         self.sub_state = rospy.Subscriber('/state', State, self.state_check)
         self.sub_joy = rospy.Subscriber("/joy", Joy, self.joy_callback)
@@ -43,10 +44,10 @@ class MCN():
     def joy_callback(self, data):
         self.axes = data.axes
         self.buttons = data.buttons
-        #self.x = 1500-self.axes[0]*300 #Scales 1200-1800
-        #self.y = 1500-self.axes[1]*300 #Scales 1200-1800
-        #self.z = 2000+(self.axes[3])*1000 #Scales 1000-3000
-        #self.yaw = 1500-self.axes[2]*300 #Scales 1200-1800
+        self.x = 1500-self.axes[0]*300 #Scales 1200-1800
+        self.y = 1500-self.axes[1]*300 #Scales 1200-1800
+        self.z = 2000+(self.axes[3])*1000 #Scales 1000-3000
+        self.yaw = 1500-self.axes[2]*300 #Scales 1200-1800
 
     def state_check(self, data):
         self.armed = data.armed
@@ -69,31 +70,40 @@ class MCN():
             if self.buttons[2]:
                 self.command_serv(3)
                 print 'Arm Quad'
+            if self.buttons[0]:
+                self.command_serv(8)
+                self.failsafe = True
+                print 'Alt Hold'
+                rospy.sleep(5)
 
-        if self.armed:
-            if self.alt < 2.0 and not self.risen:
+        if self.armed and not self.failsafe:
+            if self.alt < 1.0 and not self.risen:
                 print 'Rise'
                 #Make it rise
-                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1550, int(self.yaw))
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (1500, 1500, 1550, 1500)
                 self.pub_rc.publish(self.twist)
-            elif self.alt > 2.0: 
+            elif self.alt > 1.0: 
                 self.risen = True
-                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1450, int(self.yaw))
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (1500, 1500, 1450, 1500)
                 self.pub_rc.publish(self.twist)
             elif self.alt > 0.2 and self.risen:
                 print 'Lower'
                 #Lower it
-                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1450, int(self.yaw))
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (1500, 1500, 1450, 1500)
                 self.pub_rc.publish(self.twist)
             elif self.alt <= 0.2 and self.risen:
                 print 'Land'
                 #Land it
-                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), 1000, int(self.yaw))
+                (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (1500, 1500, 1000, 1500)
                 self.pub_rc.publish(self.twist)
 
                 print 'Test Complete, Copter Disarming'
                 self.command_serv(4)
                 self.risen = False
+        elif self.failsafe:
+            self.command_serv(7) #Put in stabilized mode
+            (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), int(self.z), int(self.yaw))
+        self.pub_rc.publish(self.twist)
 
 
 if __name__ == '__main__':
