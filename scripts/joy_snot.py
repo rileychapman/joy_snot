@@ -19,7 +19,7 @@ class MCN():
         rospy.init_node('main_control_node')
         self.axes = []
         self.buttons = []
-        self.twist = [0, 0, 0, 0, 1500, 1500, 1500, 1500]
+        self.twist = [0, 0, 0, 0, 1500, 2000, 1500, 1500]
         self.x = 1500.0 #Side Tilt
         self.y = 1500.0 #Front Tilt
         self.z = 1000.0 #Throttle
