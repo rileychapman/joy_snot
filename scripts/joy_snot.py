@@ -11,7 +11,8 @@ from geometry_msgs.msg import Twist, Pose
 from std_msgs.msg import Empty
 from sensor_msgs.msg import Joy, Imu, NavSatStatus, NavSatFix
 from datetime import datetime
-from roscopter.srv import APMCommand, State
+from roscopter.srv import APMCommand
+from roscopter.msg import State
 
 class MCN():
 
@@ -55,9 +56,6 @@ class MCN():
             if self.buttons[3]:
                 self.command_serv(4)
                 print 'Disarm Quad'
-            if self.buttons[6]:
-                self.command_serv(5)
-                print 'Manual'
             if self.buttons[8]:
                 self.command_serv(7)
                 print 'Stabilize'
@@ -68,12 +66,11 @@ class MCN():
         if self.armed:
             (self.twist[0], self.twist[1], self.twist[2], self.twist[3]) = (int(self.x), int(self.y), int(self.z), int(self.yaw))
             self.pub_rc.publish(self.twist)
-        if self.
 
 if __name__ == '__main__':
     print 'process started at ' + str(datetime.now())
     try:
         var = MCN()
         rospy.spin()
-    except rospy.ROSInterruptException: pass
-    #TODO When killing from command line, have the copter disarm
+    except rospy.ROSInterruptException: 
+        pass
