@@ -74,3 +74,4 @@ if __name__ == '__main__':
         rospy.spin()
     except rospy.ROSInterruptException: 
         pass
+    #TODO shutdown when ROS exited
