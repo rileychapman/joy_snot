@@ -1,16 +1,16 @@
 <launch>
 
-  <node pkg="roscopter" type="driver.py" name="roscopter" output="screen" args="--device=/dev/ttyUSB1 --baudrate=57600 --enable-rc-control=true">
+  <node pkg="roscopter" type="driver.py" name="roscopter" output="screen" args="--device=/dev/ttyUSB0 --baudrate=57600 --enable-rc-control=true">
   </node>
 
-  <node pkg="roscopter" type="multi_driver.py" name="roscopter2" output="screen" args="--device=/dev/ttyUSB0 --baudrate=57600 --enable-rc-control=true">
+  <node pkg="roscopter" type="multi_driver.py" name="roscopter2" output="screen" args="--device=/dev/ttyUSB1 --baudrate=57600 --enable-rc-control=true">
   </node>
 
   <node pkg="joy" type="joy_node" name="joy" required="True">
     <param name="autorepeat_rate" value="5" /> 
   </node>
 
-  <node pkg="joy_snot" type="joy_snot.py" name="joy_snot" output="screen">
+  <node pkg="joy_snot" type="joy_snot_multi.py" name="joy_snot" output="screen">
   </node>
 
 </launch>
