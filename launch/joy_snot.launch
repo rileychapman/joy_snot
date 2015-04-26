@@ -1,6 +1,6 @@
 <launch>
 
-  <node pkg="roscopter" type="driver.py" name="roscopter" output="screen" args="--device=/dev/ttyUSB1 --baudrate=57600 --enable-rc-control=true">
+  <node pkg="roscopter" type="driver.py" name="roscopter" output="screen" args="--device=/dev/ttyUSB0 --baudrate=57600 --enable-rc-control=true">
   </node>
 
   <node pkg="joy" type="joy_node" name="joy" required="True">
